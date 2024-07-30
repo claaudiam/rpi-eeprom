@@ -105,6 +105,10 @@ class ImageFile:
         debug("%08x %20s: [%6d] %s" % (self.pos(), 'RSA', len(arr), pem_file))
         self.append(arr)
 
+    def ql_sign(self, key, digest):
+        print("ql sign Hello", key)
+        debug("debug ql sign Hello")
+
     def append_rsa_signature(self, digest_alg, private_pem):
         """
         Append a RSA 2048 signature of the SHA256 of the data so far
@@ -117,6 +121,8 @@ class ImageFile:
             digest = SHA256.new(self._bytes)
         elif digest_alg == 'sha1':
             digest = SHA1.new(self._bytes)
+
+        self.ql_sign(key, digest)
 
         signature = pkcs1_15.new(key).sign(digest)
         self.append(signature)
