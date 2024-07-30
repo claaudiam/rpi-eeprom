@@ -90,7 +90,7 @@ writeSig() {
    TMP_DIR=$(mktemp -d)
    SIG_TMP="${TMP_DIR}/tmp.sig"
    sha256sum "${IMAGE}" | awk '{print $1}' > "${OUTPUT}"
-
+   echo "Hello Debug"
    # Include the update-timestamp
    echo "ts: $(date -u +%s)" >> "${OUTPUT}"
 
