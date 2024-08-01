@@ -96,7 +96,8 @@ writeSig() {
 
    if [ -n "${KEY}" ]; then
       [ -f "${KEY}" ] || die "RSA private \"${KEY}\" not found"
-      "${OPENSSL}" dgst -sign "${KEY}" -keyform PEM -sha256 -out "${SIG_TMP}" "${IMAGE}"
+      # "${OPENSSL}" dgst -sign "${KEY}" -keyform PEM -sha256 -out "${SIG_TMP}" "${IMAGE}"
+      ~/quarklink-linux-arm sign image --file "${IMAGE}" --key "${KEY}" --output "${SIG_TMP}"
       echo "rsa2048: $(xxd -c 4096 -p < "${SIG_TMP}")" >> "${OUTPUT}"
    fi
 }
