@@ -10,8 +10,6 @@ from Cryptodome.Hash import HMAC, SHA1, SHA256
 from Cryptodome.PublicKey import RSA
 from Cryptodome.Signature import pkcs1_15
 
-import pkcs11
-
 _CONFIG = {'DEBUG': False}
 MAX_BIN_SIZE = 110 * 1024
 
