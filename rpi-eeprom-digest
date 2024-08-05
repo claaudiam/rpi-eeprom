@@ -95,9 +95,8 @@ writeSig() {
    echo "ts: $(date -u +%s)" >> "${OUTPUT}"
 
    if [ -n "${KEY}" ]; then
-      [ -f "${KEY}" ] || die "RSA private \"${KEY}\" not found"
-      # "${OPENSSL}" dgst -sign "${KEY}" -keyform PEM -sha256 -out "${SIG_TMP}" "${IMAGE}"
-      ~/quarklink-linux-arm sign image --file "${IMAGE}" --key "${KEY}" --output "${SIG_TMP}"
+      # [ -f "${KEY}" ] || die "RSA private \"${KEY}\" not found"
+      "${OPENSSL}" dgst -engine pkcs11 -keyform engine -sign "${KEY}" -sha256 -out "${SIG_TMP}" "${IMAGE}"
       echo "rsa2048: $(xxd -c 4096 -p < "${SIG_TMP}")" >> "${OUTPUT}"
    fi
 }
@@ -110,7 +109,7 @@ verifySig() {
    [ -n "${sig_hex}" ] || die "No RSA signature in ${sig_file}"
 
    echo ${sig_hex} | xxd -c 4096 -p -r > "${TMP_DIR}/sig.bin"
-   "${OPENSSL}" dgst -verify "${KEY}" -signature "${TMP_DIR}/sig.bin" "${IMAGE}" || die "${IMAGE} not verified"
+   "${OPENSSL}" dgst -engine pkcs11 -keyform engine -verify "${KEY}" -signature "${TMP_DIR}/sig.bin" "${IMAGE}" || die "${IMAGE} not verified"
 }
 
 OUTPUT=""
