@@ -90,12 +90,12 @@ writeSig() {
    TMP_DIR=$(mktemp -d)
    SIG_TMP="${TMP_DIR}/tmp.sig"
    sha256sum "${IMAGE}" | awk '{print $1}' > "${OUTPUT}"
-   echo "Hello Debug"
    # Include the update-timestamp
    echo "ts: $(date -u +%s)" >> "${OUTPUT}"
 
    if [ -n "${KEY}" ]; then
       # [ -f "${KEY}" ] || die "RSA private \"${KEY}\" not found"
+      echo "Signing with QuarkLink key"
       "${OPENSSL}" dgst -engine pkcs11 -keyform engine -sign "${KEY}" -sha256 -out "${SIG_TMP}" "${IMAGE}"
       echo "rsa2048: $(xxd -c 4096 -p < "${SIG_TMP}")" >> "${OUTPUT}"
    fi
